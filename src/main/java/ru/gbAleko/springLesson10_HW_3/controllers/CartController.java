@@ -2,11 +2,14 @@ package ru.gbAleko.springLesson10_HW_3.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.gbAleko.springLesson10_HW_3.converters.OrderMapper;
 import ru.gbAleko.springLesson10_HW_3.dto.OrderDto;
 import ru.gbAleko.springLesson10_HW_3.dto.ProductDto;
+import ru.gbAleko.springLesson10_HW_3.models.entities.Order;
 import ru.gbAleko.springLesson10_HW_3.models.entities.Product;
 import ru.gbAleko.springLesson10_HW_3.services.CartService;
 import ru.gbAleko.springLesson10_HW_3.services.OrderService;
+import ru.gbAleko.springLesson10_HW_3.validators.OrderValidator;
 
 @RestController
 @RequestMapping("/api/v1/cart")
@@ -14,6 +17,8 @@ import ru.gbAleko.springLesson10_HW_3.services.OrderService;
 public class CartController {
 
     private final CartService cartService;
+    private final OrderValidator orderValidator;
+    private final OrderMapper orderMapper;
     //private final OrderService orderService;
 
     @DeleteMapping("/{id}")
@@ -37,6 +42,7 @@ public class CartController {
     }
     @PostMapping
     public OrderDto saveNewOrder(@RequestBody OrderDto orderDto) {
-
+        orderValidator.validate(orderDto);
+        Order order = orderMapper
     }
 }
