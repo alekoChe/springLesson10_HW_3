@@ -19,7 +19,7 @@ public class CartController {
     private final CartService cartService;
     private final OrderValidator orderValidator;
     private final OrderMapper orderMapper;
-    //private final OrderService orderService;
+    private final OrderService orderService;
 
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id) {
@@ -31,18 +31,11 @@ public class CartController {
         cartService.addProductIntoCart(productId);
     }
 
-    @PostMapping  /////////////////////////////////////////////////////////////
-    public ProductDto saveNewProduct(@RequestBody ProductDto productDto) {
-        productValidator.validate(productDto);
-        Product product = productConverter.dtoToEntity(productDto);
-        //Product product = productMapper.MAPPER.toProduct(productDto);
-        product = productsService.save(product);
-        return productConverter.entityToDto(product);
-        //return productMapper.MAPPER.fromProduct(product);
-    }
     @PostMapping
     public OrderDto saveNewOrder(@RequestBody OrderDto orderDto) {
         orderValidator.validate(orderDto);
-        Order order = orderMapper
+        Order order = orderMapper.MAPPER.toOrder(orderDto);
+        order = orderService.save(order);
+        return orderMapper.MAPPER.fromOrder(order);
     }
 }
