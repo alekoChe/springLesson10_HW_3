@@ -18,7 +18,7 @@ import java.util.Optional;
 @Component
 public class Cart {
 
-    //private Buyer buyer;
+    private Buyer buyer;
     private ProductDto productDto;
     private Integer numberProducts;
 
@@ -29,15 +29,10 @@ public class Cart {
         cartList = new HashMap<>();
     }
 
-    //public void deleteProductFromCartList(Long id) {
-      //  cartLList.removeIf(x -> x.getId().equals(id));
-    //}
-    private void deleteProductFromCartList(Long id) {
-        //ProductDto pr = p -> p.
-        Optional<ProductDto> productDto = cartList.entrySet().stream()
-                .filter(getProductDto()).findFirst();
+    public void deleteProductFromCartList(ProductDto productDto) {
+        cartList.remove(productDto);
     }
-    private void addProductIntoCart(ProductDto productDto, Integer numberProducts) {
+    public void addProductIntoCart(ProductDto productDto, Integer numberProducts) {
         if (!cartList.containsKey(productDto)) {
             cartList.put(productDto, numberProducts);
         } else {
