@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.gbAleko.springLesson10_HW_3.converters.OrderMapper;
+import ru.gbAleko.springLesson10_HW_3.converters.ProductConverter;
 import ru.gbAleko.springLesson10_HW_3.dto.OrderDto;
 import ru.gbAleko.springLesson10_HW_3.dto.ProductDto;
 import ru.gbAleko.springLesson10_HW_3.models.Cart;
 import ru.gbAleko.springLesson10_HW_3.models.entities.Order;
+import ru.gbAleko.springLesson10_HW_3.models.entities.Product;
 import ru.gbAleko.springLesson10_HW_3.services.OrderService;
+import ru.gbAleko.springLesson10_HW_3.services.ProductsService;
 import ru.gbAleko.springLesson10_HW_3.validators.OrderValidator;
 
 @RestController
@@ -16,23 +19,28 @@ import ru.gbAleko.springLesson10_HW_3.validators.OrderValidator;
 @RequiredArgsConstructor
 public class CartController {
 
-    //private final CartService cartService;
     @Autowired
     private Cart cart = new Cart();
     private final OrderValidator orderValidator;
     private final OrderMapper orderMapper;
     private final OrderService orderService;
+    private final ProductsService productsService;
+    private final ProductConverter productConverter;
 
-    @DeleteMapping("/delete")
-    public void deleteById(@RequestBody ProductDto productDto) {
+    @DeleteMapping
+    public void deleteById(@RequestParam Long idProduct) {
+        Product product = productsService.findById(idProduct).orElseThrow();
+        ProductDto productDto = productConverter.entityToDto(product);
         cart.deleteProductFromCartList(productDto);
     }
 
-
-    @GetMapping("/add")
-    public void addProduct(@RequestBody ProductDto productDto, @RequestParam Integer numberProducts) {
+    @GetMapping
+    public void addProduct(@RequestParam Long idProduct, @RequestParam Integer numberProducts) {
+        Product product = productsService.findById(idProduct).orElseThrow();
+        ProductDto productDto = productConverter.entityToDto(product);
         cart.addProductIntoCart(productDto, numberProducts);
     }
+
 
     @PostMapping
     public OrderDto saveNewOrder(@RequestBody OrderDto orderDto) {

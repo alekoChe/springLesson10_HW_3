@@ -12,6 +12,6 @@ public class BuyerConverter {
     }
 
     public BuyerDto entityToDto(Buyer buyer) {
-        return new BuyerDto(buyer.getId(), buyer.getName(), buyer.getPhoneNumber());
+        return new BuyerDto(buyer.getId(), buyer.getUserName(), buyer.getPhoneNumber());
     }
 }
